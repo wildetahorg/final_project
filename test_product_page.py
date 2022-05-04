@@ -5,8 +5,5 @@ link = "http://selenium1py.pythonanywhere.com/catalogue/the-shellcoders-handbook
 def test_guest_can_add_product_to_basket(browser):
     page = ProductPage(browser, link)
     page.open()
-    page.should_be_add_button
-    page.add_item_to_basket
-    time.sleep(20)
-    # page.solve_quiz_and_get_code
-    # page.check
+    page.item_correctly_added_to_basket()
+    time.sleep(15)

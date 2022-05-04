@@ -1,31 +1,37 @@
 from .base_page import BasePage as BasePage
 from .locators import ProductPageLocators
-from selenium.common.exceptions import NoAlertPresentException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import math
 import time
 
 class ProductPage(BasePage):
+    def item_correctly_added_to_basket(self):
+        self.should_be_add_button()
+        self.add_item_to_basket()
+        self.solve_quiz_and_get_code()
+        self.check_message_about_item()
+        self.check_basket_price()
+
     def should_be_add_button(self):
         assert self.is_element_present(*ProductPageLocators.ADD_BUTTON), "Add button is not presented"
+        print ("STEP 1 FINISHED")
     
     def add_item_to_basket(self):
         add_to_basket_button = self.browser.find_element(*ProductPageLocators.ADD_BUTTON)
-        time.sleep(5)
         add_to_basket_button.click()
-    
-    def solve_quiz_and_get_code(self):
-        alert = self.browser.switch_to.alert
-        x = alert.text.split(" ")[2]
-        answer = str(math.log(abs((12 * math.sin(float(x))))))
-        alert.send_keys(answer)
-        alert.accept()
-        try:
-            WebDriverWait(self.browser, 10).until(EC.alert_is_present())
-            alert = self.browser.switch_to.alert
-            alert_text = alert.text
-            print(f"Your code: {alert_text}")
-            alert.accept()
-        except NoAlertPresentException:
-            print("No second alert presented")
+        print ("STEP 2 FINISHED")
+
+    def check_message_about_item(self):
+        assert self.is_element_present(*ProductPageLocators.ADDED_ITEM_MESSAGE), "There is no message about siccessfull item adding"
+        item_name = self.browser.find_element(*ProductPageLocators.ITEM_NAME)
+        added_name = self.browser.find_element(*ProductPageLocators.ADDED_NAME)
+        item_name_text = item_name.text
+        added_name_text = added_name.text
+        assert added_name_text == item_name_text, "Incorrect name of item"
+        print ("STEP 3 FINISHED")
+
+    def check_basket_price(self):
+        item_price = self.browser.find_element(*ProductPageLocators.ITEM_PRICE)
+        basket_price = self.browser.find_element(*ProductPageLocators.BASKET_PRICE)
+        item_price_number = item_price.text
+        basket_price_number = basket_price.text
+        assert item_price_number == basket_price_number, "Incorrect price in the basket"
+        print ("STEP 4 FINISHED")
