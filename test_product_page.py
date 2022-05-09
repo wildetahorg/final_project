@@ -28,12 +28,18 @@ class TestGuestAddToBasketFromProductPage():
     @pytest.mark.parametrize('promo_link', ["0", "1", "2", "3", "4", "5", "6", "8", "9",
                                     pytest.param("7", marks=pytest.mark.xfail)])
 
-    @pytest.mark.need_review
-    def test_guest_can_add_product_to_basket(self, browser, promo_link):
+    def test_guest_can_add_product_to_basket_with_promo(self, browser, promo_link):
         link = f"http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/?promo=offer{promo_link}"
         page = ProductPage(browser, link)
         page.open()
         page.item_correctly_added_to_basket_with_promo()
+
+    @pytest.mark.need_review
+    def test_guest_can_add_product_to_basket(self, browser):
+        link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207"
+        page = ProductPage(browser, link)
+        page.open()
+        page.item_correctly_added_to_basket()
 
     @pytest.mark.xfail
     def test_guest_cant_see_success_message_after_adding_product_to_basket(self, browser):
