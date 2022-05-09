@@ -35,3 +35,9 @@ class ProductPage(BasePage):
         basket_price_number = basket_price.text
         assert item_price_number == basket_price_number, "Incorrect price in the basket"
         print ("STEP 4 FINISHED")
+
+    def there_is_no_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.ADDED_ITEM_MESSAGE), "There is message about siccessfull item adding when it shoudn't disappear"
+
+    def success_message_disappeared(self):
+        assert self.is_disappeared(*ProductPageLocators.ADDED_ITEM_MESSAGE), "Success message don't disappear when it should"
