@@ -46,6 +46,13 @@ class BasePage():
         link = self.browser.find_element(*BasePageLocators.LOGIN_LINK)
         link.click()
 
+    def should_be_basket_link(self):
+        assert self.is_element_present(*BasePageLocators.BASKET_LINK)
+
+    def go_to_basket(self):
+        basket_button = self.browser.find_element(*BasePageLocators.BASKET_LINK)
+        basket_button.click()
+
     def solve_quiz_and_get_code(self):
         alert = self.browser.switch_to.alert
         x = alert.text.split(" ")[2]
