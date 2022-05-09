@@ -6,6 +6,12 @@ class ProductPage(BasePage):
     def item_correctly_added_to_basket(self):
         self.should_be_add_button()
         self.add_item_to_basket()
+        self.check_message_about_item()
+        self.check_basket_price()
+    
+    def item_correctly_added_to_basket_with_promo(self):
+        self.should_be_add_button()
+        self.add_item_to_basket()
         self.solve_quiz_and_get_code()
         self.check_message_about_item()
         self.check_basket_price()
